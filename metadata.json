@@ -1,0 +1,14 @@
+{
+  "name": "cyberkov-openhab",
+  "version": "0.1.0",
+  "author": "Hannes Schaller",
+  "summary": "Install and manage openHAB",
+  "license": "Apache-2.0",
+  "source": "https://github.com/cyberkov/puppet-openhab",
+  "project_page": "https://github.com/cyberkov/puppet-openhab",
+  "issues_url": "https://github.com/cyberkov/puppet-openhab/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
+
