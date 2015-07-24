@@ -14,9 +14,32 @@
 #
 # * `manage_repo`
 #
+# * `modules`
+#  Array of modules, that need to be installed
+#
 # Variables
 # ----------
 #
+# In your hiera config you need to define an array with
+# the needed modules for openHAB:
+# openhab::modules:
+#   - openhab-addon-action-homematic
+#   - openhab-addon-action-pushover
+#   - openhab-addon-action-xbmc
+#   - openhab-addon-binding-astro
+#   - openhab-addon-binding-cups
+#   - openhab-addon-binding-exec
+#   - openhab-addon-binding-homematic
+#   - openhab-addon-binding-mqtt
+#   - openhab-addon-binding-mqttitude
+#   - openhab-addon-binding-networkhealth
+#   - openhab-addon-binding-rfxcom
+#   - openhab-addon-binding-weather
+#   - openhab-addon-binding-xbmc
+#   - openhab-addon-io-serial
+#   - openhab-addon-persistence-mqtt
+#   - openhab-addon-persistence-mysql
+#   - openhab-addon-persistence-rrd4j
 #
 # Examples
 # --------

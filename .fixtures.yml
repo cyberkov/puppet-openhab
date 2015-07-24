@@ -1,0 +1,7 @@
+---
+fixtures:
+  forge_modules:
+    apt: "puppetlabs/apt"
+    stdlib: "puppetlabs/stdlib"
+  symlinks:
+    openhab: "#{source_dir}"
