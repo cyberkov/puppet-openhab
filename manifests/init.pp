@@ -71,14 +71,21 @@ class openhab (
   validate_array($modules)
 
   if $manage_repo {
-    apt::source { 'openhab':
-      location => 'http://dl.bintray.com/openhab/apt-repo',
-      release  => $version,
-      repos    => 'main',
-  #    key      => {
-  #      'id'     => '',
-  #      'server' => 'pgp.mit.edu',
-  #    },
+    case $::lsbdistid {
+    /Ubuntu|Debian/: {
+        apt::source { 'openhab':
+          location => 'http://dl.bintray.com/openhab/apt-repo',
+          release  => $version,
+          repos    => 'main',
+      #    key      => {
+      #      'id'     => '',
+      #      'server' => 'pgp.mit.edu',
+      #    },
+        }
+      }
+      default:  {
+        fail("manage_repo can only be set for supported OS'es")
+      }
     }
   }
 
