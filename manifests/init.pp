@@ -45,7 +45,12 @@
 # --------
 #
 # @example
-#    class { 'openhab': }
+#    class { 'openhab': 
+#      modules => [ 
+#        'openhab-addon-persistence-rrd4j',
+#        'openhab-addon-binding-exec'
+#      ]
+#    }
 #
 # Authors
 # -------
