@@ -1,6 +1,6 @@
 {
   "name": "cyberkov-openhab",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Hannes Schaller",
   "summary": "Install and manage openHAB",
   "license": "Apache-2.0",
@@ -9,8 +9,11 @@
   "issues_url": "https://github.com/cyberkov/puppet-openhab/issues",
   "operatingsystem_support": [
     {
-      "operatingsystem":"Debian",
-      "operatingsystemrelease":[ "7.0", "8.0" ]
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "7.0",
+        "8.0"
+      ]
     },
     {
       "operatingsystem": "Ubuntu",
@@ -23,7 +26,7 @@
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
-      "version_requirement":">= 3.2.0 < 5.0.0"
+      "version_requirement": ">= 3.2.0 < 5.0.0"
     },
     {
       "name": "puppetlabs-apt",
