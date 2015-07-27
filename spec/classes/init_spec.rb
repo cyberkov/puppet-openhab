@@ -1,16 +1,25 @@
 require 'spec_helper'
 describe 'openhab' do
-  let(:facts) { {:lsbdistid => 'Debian', :osfamily => 'Debian' } }
+  let(:facts) { {:lsbdistid => 'Debian', :lsbdistcodename => 'jessie' , :osfamily => 'Debian' } }
 
   context 'with defaults for all parameters' do
     it { should contain_class('openhab') }
   end
 
   context 'with defaults on debian' do
-    let(:params) { {:manage_repo => true } }
-    let(:facts) { {:lsbdistid => 'Debian', :osfamily => 'Debian' } }
 
     it { should contain_apt__source('openhab') }
+    it { should contain_apt__conf('AllowUnauthenticated') }
+    it { should contain_package('openhab-runtime') }
+    it { should contain_service('openhab') }
+    it { should contain_user('openhab') }
+  end
+
+  context 'without manage_repo on debian' do
+    let(:params) { {:manage_repo => false } }
+
+    it { should_not contain_apt__source('openhab') }
+    it { should_not contain_apt__conf('AllowUnauthenticated') }
     it { should contain_package('openhab-runtime') }
     it { should contain_service('openhab') }
     it { should contain_user('openhab') }
