@@ -16,10 +16,15 @@
       ]
     },
     {
+      "operatingsystem": "Raspbian",
+      "operatingsystemrelease": [
+        "8.0"
+      ]
+    },
+    {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "12.04",
-        "10.04"
+        "14.04"
       ]
     }
   ],
