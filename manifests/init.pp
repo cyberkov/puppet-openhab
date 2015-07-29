@@ -93,7 +93,6 @@ class openhab (
           package               => 'oracle-java8-jdk',
           java_alternative      => 'jdk-8-oracle-arm-vfp-hflt',
           java_alternative_path => '/usr/lib/jvm/jdk-8-oracle-arm-vfp-hflt/jre/bin/java',
-          java_home             => '/usr/lib/jvm/jdk-8-oracle-arm-vfp-hflt/',
         }
       }
       default: {
