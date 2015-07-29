@@ -86,7 +86,20 @@ class openhab (
   validate_array($modules)
 
   if $manage_java {
-    include java
+    case $::lsbdistid {
+      'Raspbian': {
+        class {'java':
+          distribution          => 'jdk',
+          package               => 'oracle-java8-jdk',
+          java_alternative      => 'jdk-8-oracle-arm-vfp-hflt',
+          java_alternative_path => '/usr/lib/jvm/jdk-8-oracle-arm-vfp-hflt/jre/bin/java',
+          java_home             => '/usr/lib/jvm/jdk-8-oracle-arm-vfp-hflt/',
+        }
+      }
+      default: {
+        include java
+      }
+    }
   }
 
   if $manage_repo {
