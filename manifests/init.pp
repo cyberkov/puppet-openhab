@@ -71,12 +71,24 @@
 # Copyright 2015 Hannes Schaller, unless otherwise noted.
 #
 class openhab (
-  $package_ensure = 'present',
-  $manage_repo = true,
-  $manage_java = true,
-  $version = 'stable',
-  $modules = []
-){
+  $package_ensure = $::openhab::params::package_ensure,
+  $manage_repo = $::openhab::params::manage_repo,
+  $manage_java = $::openhab::params::manage_java,
+  $version = $::openhab::params::version,
+  $modules = $::openhab::params::modules
+) inherits openhab::params {
+
+  class { '::openhab::install': }
+  class { '::openhab::config': }
+  class { '::openhab::service': }
+
+  # Containment
+  anchor { 'openhab::begin': } ->
+  Class['openhab::install'] ->
+  Class['openhab::config'] ~>
+  Class['openhab::service'] ->
+  anchor { 'openhab::end': }
+
 
 # Validations
   validate_string($package_ensure)
@@ -84,74 +96,5 @@ class openhab (
   validate_bool($manage_java)
   validate_string($version)
   validate_array($modules)
-
-  if $manage_java {
-    case $::lsbdistid {
-      'Raspbian': {
-        class {'java':
-          distribution          => 'jdk',
-          package               => 'oracle-java8-jdk',
-          java_alternative      => 'jdk-8-oracle-arm-vfp-hflt',
-          java_alternative_path => '/usr/lib/jvm/jdk-8-oracle-arm-vfp-hflt/jre/bin/java',
-        }
-      }
-      default: {
-        include java
-      }
-    }
-  }
-
-  if $manage_repo {
-    case $::lsbdistid {
-    /Ubuntu|Debian|Raspbian/: {
-        include apt
-
-        # Until now openHAB does not sign its packages.
-        # Sorry that very bad hack.
-        apt::conf { 'AllowUnauthenticated':
-          ensure  => present,
-          content => 'APT::Get::AllowUnauthenticated yes;',
-        }
-
-        apt::source { 'openhab':
-          location => 'http://dl.bintray.com/openhab/apt-repo',
-          release  => $version,
-          repos    => 'main',
-      #    key      => {
-      #      'id'     => '',
-      #      'server' => 'pgp.mit.edu',
-      #    },
-        }
-      }
-      default:  {
-        fail("manage_repo can only be set for supported OS'es")
-      }
-    }
-  }
-
-  package { 'openhab-runtime':
-    ensure  => $package_ensure,
-    require => Apt::Source['openhab'],
-    notify  => Service['openhab'],
-  }
-
-  package { $modules :
-    ensure => present,
-    notify => Service['openhab'],
-  }
-
-  user { 'openhab':
-    ensure  => present,
-    groups  => [ 'dialout' ],
-    require => Package['openhab-runtime'],
-  }
-
-  service { 'openhab':
-    ensure  => running,
-    enable  => true,
-    require => Package['openhab-runtime']
-  }
-
-
 
 }
