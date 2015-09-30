@@ -17,7 +17,7 @@ class openhab::params {
   $package_ensure = 'present'
   $manage_repo = true
   $manage_java = true
-  $version = 'stable'
+  $version = 1
   $modules = []
 
   #URLs:

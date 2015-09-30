@@ -94,7 +94,7 @@ class openhab (
   validate_string($package_ensure)
   validate_bool($manage_repo)
   validate_bool($manage_java)
-  validate_string($version)
+  validate_integer($version)
   validate_array($modules)
 
 }

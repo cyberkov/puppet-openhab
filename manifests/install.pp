@@ -34,48 +34,17 @@ class openhab::install {
     }
   }
 
-  if $::openhab::manage_repo {
-    case $::lsbdistid {
-    /Ubuntu|Debian|Raspbian/: {
-        include apt
-
-        # Until now openHAB does not sign its packages.
-        # Sorry that very bad hack.
-        apt::conf { 'AllowUnauthenticated':
-          ensure  => present,
-          content => 'APT::Get::AllowUnauthenticated yes;',
-        }
-
-        apt::source { 'openhab':
-          location => 'http://dl.bintray.com/openhab/apt-repo',
-          release  => $::openhab::version,
-          repos    => 'main',
-      #    key      => {
-      #      'id'     => '',
-      #      'server' => 'pgp.mit.edu',
-      #    },
-        }
-      }
-      default:  {
-        fail("manage_repo can only be set for supported OS'es")
-      }
+  case $::openhab::version {
+    1: {
+      class {'openhab::install::v1': }
+    }
+    2: {
+      class {'openhab::install::v2': }
     }
   }
-
-  package { 'openhab-runtime':
-    ensure  => $::openhab::package_ensure,
-    require => Apt::Source['openhab'],
-    notify  => Service['openhab'],
-  }
-
-    package { $::openhab::modules :
-    ensure => present,
-    notify => Service['openhab'],
-  }
-
+      
   user { 'openhab':
-    ensure  => present,
-    groups  => [ 'dialout' ],
-    require => Package['openhab-runtime'],
+    ensure => present,
+    groups => [ 'dialout' ],
   }
 }
