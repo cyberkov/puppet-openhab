@@ -21,7 +21,6 @@ class openhab::service {
   service { 'openhab':
     ensure  => running,
     enable  => true,
-    require => Package['openhab-runtime'],
   }
 
 }

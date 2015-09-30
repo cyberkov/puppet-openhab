@@ -43,8 +43,4 @@ class openhab::install {
     }
   }
       
-  user { 'openhab':
-    ensure => present,
-    groups => [ 'dialout' ],
-  }
 }
