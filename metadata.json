@@ -40,6 +40,18 @@
     {
       "name": "puppetlabs-java",
       "version_requirement": "1.x"
+    },
+    {
+      "name": "puppetlabs-vcsrepo",
+      "version_requirement": "2.x"
+    },
+    {
+      "name": "puppetlabs-git",
+      "version_requirement": "2.x"
+    },
+    {
+      "name": "camptocamp-archive",
+      "version_requirement": "2.x"
     }
   ]
 }

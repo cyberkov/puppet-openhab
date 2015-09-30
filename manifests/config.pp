@@ -20,7 +20,56 @@ class openhab::config {
 
   user { 'openhab':
     ensure => present,
+    home   => $::openhab::root_dir_real,
     groups => [ 'dialout' ],
+  }
+
+  if $::openhab::modules {
+    ensure_resource('openhab::module', $::openhab::modules, { ensure => 'installed' })
+  }
+
+  if $::openhab::git_source {
+    require 'git'
+
+    if !defined(File["${::openhab::root_dir}/.ssh"]) {
+      file { "${::openhab::root_dir}/.ssh":
+        ensure => 'directory',
+        owner  => 'openhab',
+        group  => 'openhab',
+        mode   => '0700',
+      }
+    }
+
+    if !defined(File["${::openhab::root_dir}/.ssh/id_rsa"]) {
+      file { "${::openhab::root_dir}/.ssh/id_rsa":
+        ensure  => 'file',
+        owner   => 'openhab',
+        group   => 'openhab',
+        mode    => '0600',
+        content => $::openhab::ssh_privatekey,
+        source  => $::openhab::ssh_privatekey_file,
+      }
+    }
+
+    if $::openhab::auto_accept_host_key {
+      file { "${::openhab::root_dir}/.ssh/config":
+        owner   => 'openhab',
+        group   => 'openhab',
+        mode    => '0440',
+        content => "Host *\n\tStrictHostKeyChecking no\n",
+        before  => Vcsrepo["${::openhab::root_dir}/${::openhab::bot_name}"],
+      }
+    }
+
+    vcsrepo { "${::openhab::root_dir}/conf":
+      ensure   => latest,
+      provider => git,
+      source   => $::openhab::git_source,
+      user     => 'openhab',
+      revision => 'master',
+      notify   => Class['openhab::service'],
+    }
+
   }
 
 }

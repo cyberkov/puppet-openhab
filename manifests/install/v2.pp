@@ -18,4 +18,24 @@ class openhab::install::v2 {
     fail("Use of private class ${name} by ${caller_module_name}")
   }
 
+  case $::openhab::install_method {
+    'archive',default: {
+      archive { 'openhab-runtime':
+        ensure   => 'present',
+        checksum => false,
+        root_dir => 'bla',
+        target   => $::openhab::root_dir,
+        url      => $::openhab::runtime_source,
+      }
+
+      archive { 'openhab-addons':
+        ensure   => 'present',
+        checksum => false,
+        root_dir => 'bla',
+        target   => $::openhab::addon_repo_dir,
+        url      => $::openhab::addons_source,
+      }
+    }
+  }
+
 }

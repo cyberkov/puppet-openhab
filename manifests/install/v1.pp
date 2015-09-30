@@ -48,9 +48,4 @@ class openhab::install::v1 {
     notify  => Service['openhab'],
   }
 
-    package { $::openhab::modules :
-    ensure => present,
-    notify => Service['openhab'],
-  }
-
 }

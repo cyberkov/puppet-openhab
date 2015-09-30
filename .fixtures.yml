@@ -4,5 +4,8 @@ fixtures:
     apt: "puppetlabs/apt"
     stdlib: "puppetlabs/stdlib"
     java: "puppetlabs/java"
+    vcsrepo: "puppetlabs/vcsrepo"
+    git: "puppetlabs/git"
+    archive: "camptocamp/archive"
   symlinks:
     openhab: "#{source_dir}"

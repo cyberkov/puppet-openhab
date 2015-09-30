@@ -72,11 +72,30 @@
 #
 class openhab (
   $package_ensure = $::openhab::params::package_ensure,
+  $service_ensure = $::openhab::params::service_ensure,
+  $service_enable = $::openhab::params::service_enable,
   $manage_repo = $::openhab::params::manage_repo,
   $manage_java = $::openhab::params::manage_java,
   $version = $::openhab::params::version,
-  $modules = $::openhab::params::modules
+  $modules = $::openhab::params::modules,
+  $git_source = $::openhab::params::git_source,
+  $root_dir = undef,
+  $ssh_privatekey = $::openhab::params::ssh_privatekey,
+  $ssh_privatekey_file = $::openhab::params::ssh_privatekey_file,
 ) inherits openhab::params {
+
+  if $root_dir {
+    $root_dir_real = $root_dir
+  } else {
+    case $::openhab::version {
+      /^1/,default: {
+        $root_dir_real = '/var/lib/openhab'
+      }
+      /^2/: {
+        $root_dir_real = '/opt/openhab'
+      }
+    }
+  }
 
   class { '::openhab::install': }
   class { '::openhab::config': }
@@ -91,10 +110,8 @@ class openhab (
 
 
 # Validations
-  validate_string($package_ensure)
-  validate_bool($manage_repo)
-  validate_bool($manage_java)
-  validate_integer($version)
+  validate_string($package_ensure, $service_ensure, $root_dir, $version)
+  validate_bool($manage_repo, $manage_java, $service_enable)
   validate_array($modules)
 
 }
