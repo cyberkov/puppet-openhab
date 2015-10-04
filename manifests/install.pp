@@ -34,13 +34,6 @@ class openhab::install {
     }
   }
 
-  file { $::openhab::root_dir_real:
-    ensure => 'directory',
-    owner  => 'openhab',
-    group  => 'openhab',
-    mode   => '0755',
-  }
-
   case $::openhab::version {
     /^1/,default: {
       class {'openhab::install::v1': }
