@@ -16,7 +16,6 @@ describe 'openhab' do
     it { should_not contain_package('openhab-runtime') }
     it { should contain_service('openhab') }
     it { should contain_user('openhab').with('home' => '/opt/openhab') }
-    it { should contain_file('/opt/openhab').with( 'ensure' => 'directory') }
   end
 
   context 'with gitrepo to custom path' do
@@ -25,15 +24,16 @@ describe 'openhab' do
       :root_dir => '/home/openhab',
       :git_source => 'git@git.example.com:openhab.git',
       :ssh_privatekey => 'fookey',
+      :auto_accept_host_key => true,
       :modules => [ 'binding.homematic', 'persistence.mqtt', 'action.pushover' ],
     } }
     
-    it { should contain_file('/home/openhab').with( 'ensure' => 'directory') }
     it { should contain_vcsrepo('/home/openhab/conf').with( 'source' => 'git@git.example.com:openhab.git', 'ensure' => 'latest') }
     it {
       should contain_file('/home/openhab/.ssh')
       should contain_file('/home/openhab/.ssh/id_rsa').with( 'content' => 'fookey')
     }
+    it { should contain_file('/home/openhab/.ssh/config') }
     it { should contain_user('openhab').with('home' => '/home/openhab') }
     it { 
       should contain_openhab__module('binding.homematic') 

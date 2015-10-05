@@ -79,6 +79,7 @@ class openhab (
   $root_dir = undef,
   $ssh_privatekey = $::openhab::params::ssh_privatekey,
   $ssh_privatekey_file = $::openhab::params::ssh_privatekey_file,
+  $auto_accept_host_key = $::openhab::params::auto_accept_host_key,
 ) inherits openhab::params {
 
   if $root_dir {
@@ -94,6 +95,11 @@ class openhab (
     }
   }
 
+# Validations
+  validate_string($package_ensure, $service_ensure, $root_dir, $version)
+  validate_bool($manage_repo, $manage_java, $service_enable)
+  validate_array($modules)
+
   class { '::openhab::install': }
   class { '::openhab::config': }
   class { '::openhab::service': }
@@ -104,11 +110,5 @@ class openhab (
   Class['openhab::config'] ~>
   Class['openhab::service'] ->
   anchor { 'openhab::end': }
-
-
-# Validations
-  validate_string($package_ensure, $service_ensure, $root_dir, $version)
-  validate_bool($manage_repo, $manage_java, $service_enable)
-  validate_array($modules)
 
 }

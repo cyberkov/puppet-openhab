@@ -57,7 +57,7 @@ class openhab::config {
         group   => 'openhab',
         mode    => '0440',
         content => "Host *\n\tStrictHostKeyChecking no\n",
-        before  => Vcsrepo["${::openhab::root_dir}/${::openhab::bot_name}"],
+        before  => Vcsrepo["${::openhab::root_dir}/conf"],
       }
     }
 

@@ -14,8 +14,7 @@ describe 'openhab' do
     it { should contain_apt__source('openhab') }
     it { should contain_package('openhab-runtime') }
     it { should contain_service('openhab') }
-    it { should contain_file('/var/lib/openhab').with('ensure' => 'directory') }
-    it { should contain_user('openhab') }
+    it { should contain_user('openhab').with('home' => '/var/lib/openhab') }
     it { 
       should contain_openhab__module('persistence-rrd4j')
       should contain_package('openhab-addon-persistence-rrd4j')
