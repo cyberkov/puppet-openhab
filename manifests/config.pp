@@ -61,6 +61,14 @@ class openhab::config {
       }
     }
 
+    file { $::openhab::conf_dir_real:
+      ensure => 'directory',
+      owner  => 'openhab',
+      group  => 'openhab',
+      mode   => '0755',
+      before => Vcsrepo[$::openhab::conf_dir_real],
+    }
+
     vcsrepo { $::openhab::conf_dir_real:
       ensure   => latest,
       provider => git,
