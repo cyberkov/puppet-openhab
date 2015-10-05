@@ -1,6 +1,6 @@
 {
   "name": "cyberkov-openhab",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Hannes Schaller",
   "summary": "Install and manage openHAB",
   "license": "Apache-2.0",
