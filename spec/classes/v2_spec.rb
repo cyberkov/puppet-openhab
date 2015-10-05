@@ -13,7 +13,6 @@ describe 'openhab' do
 
   context 'with defaults on debian' do
     it { should_not contain_apt__source('openhab') }
-    it { should_not contain_apt__conf('AllowUnauthenticated') }
     it { should_not contain_package('openhab-runtime') }
     it { should contain_service('openhab') }
     it { should contain_user('openhab').with('home' => '/opt/openhab') }

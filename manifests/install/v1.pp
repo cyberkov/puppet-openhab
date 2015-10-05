@@ -23,17 +23,11 @@ class openhab::install::v1 {
       /Ubuntu|Debian|Raspbian/: {
         include apt
 
-# Until now openHAB does not sign its packages.
-# Sorry that very bad hack.
-        apt::conf { 'AllowUnauthenticated':
-          ensure  => present,
-          content => 'APT::Get::AllowUnauthenticated yes;',
-        }
-
         apt::source { 'openhab':
           location => 'http://dl.bintray.com/openhab/apt-repo',
           release  => $::openhab::version,
           repos    => 'main',
+          key      => 'EDB7D0304E2FCAF629DF1163075721F6A224060A',
         }
       }
       default:  {
