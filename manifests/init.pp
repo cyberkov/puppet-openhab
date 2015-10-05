@@ -15,9 +15,6 @@
 # * `manage_repo`
 #  Whether the openhab repo should be used. As of now this is the only
 #  option to install openHab with this module.
-#  WARNING: The openHAB packages are not signed yet, so we need to modify apt
-#           to allow the installation of unsigned packages. This *could* be a
-#           security risk.
 #
 # * `manage_java`
 #  Install java if necessary. This utilizes the puppetlabs-java module
@@ -106,21 +103,11 @@ class openhab (
     /Ubuntu|Debian|Raspbian/: {
         include apt
 
-        # Until now openHAB does not sign its packages.
-        # Sorry that very bad hack.
-        apt::conf { 'AllowUnauthenticated':
-          ensure  => present,
-          content => 'APT::Get::AllowUnauthenticated yes;',
-        }
-
         apt::source { 'openhab':
           location => 'http://dl.bintray.com/openhab/apt-repo',
           release  => $version,
           repos    => 'main',
-      #    key      => {
-      #      'id'     => '',
-      #      'server' => 'pgp.mit.edu',
-      #    },
+          key      => 'EDB7D0304E2FCAF629DF1163075721F6A224060A',
         }
       }
       default:  {
