@@ -31,8 +31,8 @@ class openhab::config {
   if $::openhab::git_source {
     require 'git'
 
-    if !defined(File["${::openhab::root_dir}/.ssh"]) {
-      file { "${::openhab::root_dir}/.ssh":
+    if !defined(File["${::openhab::root_dir_real}/.ssh"]) {
+      file { "${::openhab::root_dir_real}/.ssh":
         ensure => 'directory',
         owner  => 'openhab',
         group  => 'openhab',
@@ -40,8 +40,8 @@ class openhab::config {
       }
     }
 
-    if !defined(File["${::openhab::root_dir}/.ssh/id_rsa"]) {
-      file { "${::openhab::root_dir}/.ssh/id_rsa":
+    if !defined(File["${::openhab::root_dir_real}/.ssh/id_rsa"]) {
+      file { "${::openhab::root_dir_real}/.ssh/id_rsa":
         ensure  => 'file',
         owner   => 'openhab',
         group   => 'openhab',
@@ -52,16 +52,16 @@ class openhab::config {
     }
 
     if $::openhab::auto_accept_host_key {
-      file { "${::openhab::root_dir}/.ssh/config":
+      file { "${::openhab::root_dir_real}/.ssh/config":
         owner   => 'openhab',
         group   => 'openhab',
         mode    => '0440',
         content => "Host *\n\tStrictHostKeyChecking no\n",
-        before  => Vcsrepo["${::openhab::root_dir}/conf"],
+        before  => Vcsrepo[$::openhab::conf_dir_real],
       }
     }
 
-    vcsrepo { "${::openhab::root_dir}/conf":
+    vcsrepo { $::openhab::conf_dir_real:
       ensure   => latest,
       provider => git,
       source   => $::openhab::git_source,

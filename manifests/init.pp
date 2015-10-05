@@ -77,6 +77,7 @@ class openhab (
   $modules = $::openhab::params::modules,
   $git_source = $::openhab::params::git_source,
   $root_dir = undef,
+  $conf_dir = undef,
   $ssh_privatekey = $::openhab::params::ssh_privatekey,
   $ssh_privatekey_file = $::openhab::params::ssh_privatekey_file,
   $auto_accept_host_key = $::openhab::params::auto_accept_host_key,
@@ -95,8 +96,21 @@ class openhab (
     }
   }
 
+  if $conf_dir {
+    $conf_dir_real = $conf_dir
+  } else {
+    case $::openhab::version {
+      /^1/,default: {
+        $conf_dir_real = '/etc/openhab/configurations'
+      }
+      /^2/: {
+        $conf_dir_real = "${::openhab::root_dir}/conf"
+      }
+    }
+  }
+
 # Validations
-  validate_string($package_ensure, $service_ensure, $root_dir, $version)
+  validate_string($package_ensure, $service_ensure, $root_dir_real, $conf_dir_real, $version)
   validate_bool($manage_repo, $manage_java, $service_enable)
   validate_array($modules)
 

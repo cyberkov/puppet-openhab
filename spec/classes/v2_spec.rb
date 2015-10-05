@@ -43,5 +43,13 @@ describe 'openhab' do
 
   end
 
+  context 'with gitrepo on custom path' do
+    let(:params) { {
+      :version => '2',
+      :git_source => 'git@git.example.com:openhab.git',
+      :conf_dir => '/etc/openhab',
+    } }
+    it { should contain_vcsrepo('/etc/openhab').with( 'source' => 'git@git.example.com:openhab.git', 'ensure' => 'latest') }
+  end
 
 end

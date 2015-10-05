@@ -43,15 +43,15 @@
     },
     {
       "name": "puppetlabs-vcsrepo",
-      "version_requirement": "2.x"
+      "version_requirement": "1.x"
     },
     {
       "name": "puppetlabs-git",
-      "version_requirement": "2.x"
+      "version_requirement": "0.x"
     },
     {
       "name": "camptocamp-archive",
-      "version_requirement": "2.x"
+      "version_requirement": "0.x"
     }
   ]
 }

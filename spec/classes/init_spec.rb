@@ -40,4 +40,20 @@ describe 'openhab' do
     it { should contain_package('openhab-addon-binding-homematic') }
     it { should contain_package('openhab-addon-action-pushover') }
   end
+
+  context 'with gitrepo' do
+    let(:params) { {
+      :git_source => 'git@git.example.com:openhab.git',
+    } }
+    it { should contain_vcsrepo('/etc/openhab/configurations').with( 'source' => 'git@git.example.com:openhab.git', 'ensure' => 'latest') }
+  end
+
+  context 'with gitrepo on custom path' do
+    let(:params) { {
+      :git_source => 'git@git.example.com:openhab.git',
+      :conf_dir => '/etc/openhab',
+    } }
+    it { should contain_vcsrepo('/etc/openhab').with( 'source' => 'git@git.example.com:openhab.git', 'ensure' => 'latest') }
+  end
+
 end
