@@ -15,9 +15,6 @@
 # * `manage_repo`
 #  Whether the openhab repo should be used. As of now this is the only
 #  option to install openHab with this module.
-#  WARNING: The openHAB packages are not signed yet, so we need to modify apt
-#           to allow the installation of unsigned packages. This *could* be a
-#           security risk.
 #
 # * `manage_java`
 #  Install java if necessary. This utilizes the puppetlabs-java module

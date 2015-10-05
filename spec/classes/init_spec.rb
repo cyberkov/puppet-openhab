@@ -12,7 +12,6 @@ describe 'openhab' do
 
   context 'with defaults on debian' do
     it { should contain_apt__source('openhab') }
-    it { should contain_apt__conf('AllowUnauthenticated') }
     it { should contain_package('openhab-runtime') }
     it { should contain_service('openhab') }
     it { should contain_file('/var/lib/openhab').with('ensure' => 'directory') }
@@ -27,7 +26,6 @@ describe 'openhab' do
     let(:params) { {:manage_repo => false } }
 
     it { should_not contain_apt__source('openhab') }
-    it { should_not contain_apt__conf('AllowUnauthenticated') }
     it { should contain_package('openhab-runtime') }
     it { should contain_service('openhab') }
     it { should contain_user('openhab').with('home' => '/var/lib/openhab') }
