@@ -1,24 +1,53 @@
-source "https://rubygems.org"
+source ENV['GEM_SOURCE'] || "https://rubygems.org"
 
-group :test do
-  gem "rake"
-  gem "puppet", ENV['PUPPET_VERSION'] || '~> 3.7.0'
-  gem "rspec", '< 3.2.0'
-  gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git'
-  gem "puppetlabs_spec_helper"
-  gem "metadata-json-lint"
-  gem "rspec-puppet-facts"
+group :local_development do
+  gem "travis",                                            :require => false
+  gem "travis-lint",                                       :require => false
+  gem "vagrant-wrapper",                                   :require => false if RUBY_VERSION =~ /^1.8/
+  gem "guard-rake",                                        :require => false if RUBY_VERSION =~ /^1.8/
 end
 
-group :development do
-  gem "travis"
-  gem "travis-lint"
-  gem "vagrant-wrapper"
-  gem "puppet-blacksmith"
-  gem "guard-rake"
+group :development, :unit_tests do
+  gem 'rake',                                              :require => false
+  gem 'rspec', '< 3.2',                                    :require => false if RUBY_VERSION =~ /^1.8/
+  gem 'rspec-puppet',                                      :require => false
+  gem 'puppetlabs_spec_helper',                            :require => false
+  gem 'metadata-json-lint',                                :require => false
+  gem 'puppet-lint',                                       :require => false
+  gem 'puppet-lint-unquoted_string-check',                 :require => false
+  gem 'puppet-lint-empty_string-check',                    :require => false
+  gem 'puppet-lint-spaceship_operator_without_tag-check',  :require => false
+  gem 'puppet-lint-variable_contains_upcase',              :require => false
+  gem 'puppet-lint-absolute_classname-check',              :require => false
+  gem 'puppet-lint-undef_in_function-check',               :require => false
+  gem 'puppet-lint-leading_zero-check',                    :require => false
+  gem 'puppet-lint-trailing_comma-check',                  :require => false
+  gem 'puppet-lint-file_ensure-check',                     :require => false
+  gem 'puppet-lint-version_comparison-check',              :require => false
+  gem 'puppet-lint-fileserver-check',                      :require => false
+  gem 'puppet-lint-file_source_rights-check',              :require => false
+  gem 'puppet-lint-alias-check',                           :require => false
+  gem 'rspec-puppet-facts',                                :require => false
+  gem 'ruby-augeas',                                       :require => false
+  gem 'github_changelog_generator',                        :require => false if RUBY_VERSION !~ /^1.8/
+  gem 'puppet-blacksmith',                                 :require => false if RUBY_VERSION !~ /^1.8/
 end
 
 group :system_tests do
-  gem "beaker"
-  gem "beaker-rspec"
+  gem "beaker",              :require => false
+  gem "beaker-rspec",        :require => false
+  gem 'beaker_spec_helper',  :require => false
+  gem 'serverspec',          :require => false
+end
+
+if facterversion = ENV['FACTER_VERSION']
+  gem 'facter', facterversion, :require => false
+else
+  gem 'facter', :require => false
+end
+
+if puppetversion = ENV['PUPPET_VERSION']
+  gem 'puppet', puppetversion, :require => false
+else
+  gem 'puppet', :require => false
 end

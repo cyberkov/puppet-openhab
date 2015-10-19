@@ -1,57 +1,43 @@
 ---
 language: ruby
-sudo: false
-addons:
-  apt:
-    packages:
-      - libaugeas-dev
+sudo: required
+services: docker
 cache: bundler
-bundler_args: --without system_tests
+bundler_args: --without system_tests local_development
 before_install: rm Gemfile.lock || true
-script: ["bundle exec rake validate", "bundle exec rake lint", "bundle exec rake spec SPEC_OPTS='--format documentation'", "bundle exec rake metadata"]
+script: ["bundle exec rake validate", "bundle exec rake lint", "bundle exec rake spec SPEC_OPTS='--format documentation'", "bundle exec rake metadata", "bundle exec rake acceptance"]
 matrix:
   fast_finish: true
   include:
   - rvm: 1.8.7
-    env: PUPPET_GEM_VERSION="~> 3.0" FACTER_GEM_VERSION="~> 1.7.0"
+    env: PUPPET_VERSION="~> 3.0" FACTER_VERSION="~> 1.7.0"
   - rvm: 1.9.3
-    env: PUPPET_GEM_VERSION="~> 3.0"
+    env: PUPPET_VERSION="~> 3.0"
   - rvm: 2.0.0
-    env: PUPPET_GEM_VERSION="~> 3.0"
+    env: PUPPET_VERSION="~> 3.0"
   - rvm: 2.0.0
-    env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
+    env: PUPPET_VERSION="~> 3.0" FUTURE_PARSER="yes"
   - rvm: 2.1.6
-    env: PUPPET_GEM_VERSION="~> 4.0"
+    env: PUPPET_VERSION="~> 4.0"
   - rvm: default
-    sudo: required
     services: docker
     env: BEAKER_set="debian-6-x86_64-docker"
-    bundler_args:
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+    script: bundle exec rake acceptance
   - rvm: default
-    sudo: required
     services: docker
     env: BEAKER_set="debian-7-x86_64-docker"
-    bundler_args:
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+    script: bundle exec rake acceptance
   - rvm: default
-    sudo: required
     services: docker
     env: BEAKER_set="debian-8-x86_64-docker"
-    bundler_args:
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+    script: bundle exec rake acceptance
   - rvm: default
-    sudo: required
     services: docker
     env: BEAKER_set="centos-6-x86_64-docker"
-    bundler_args:
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+    script: bundle exec rake acceptance
   - rvm: default
-    sudo: required
-    services: docker
     env: BEAKER_set="centos-7-x86_64-docker"
-    bundler_args:
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
+    script: bundle exec rake acceptance
 notifications:
   email: false
 deploy:
